@@ -44,7 +44,6 @@ start:
 	je near .show_deleted
 
 
-
 .delete_file:
 	call .draw_background
 
