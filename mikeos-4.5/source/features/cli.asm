@@ -74,6 +74,10 @@ get_cmd:				; Main processing loop
 	mov di, dir_string		; 'DIR' entered?
 	call os_string_compare
 	jc near list_directory
+	
+	mov di, ddir_string		; 'DDIR' entered?
+	call os_string_compare
+	jc near list_deleted
 
 	mov di, ver_string		; 'VER' entered?
 	call os_string_compare
@@ -297,6 +301,15 @@ list_directory:
 	mov si, dirlist
 	mov ah, 0Eh			; BIOS teletype function
 
+list_deleted:
+	mov cx, 0			; Counter
+	
+	mov ax, ;dirlist
+	call os_get_file_list
+	
+	mov si, ;dirlist
+	move ah, 0Eh
+  
 .repeat:
 	lodsb				; Start printing filenames
 	cmp al, 0			; Quit if end of string
@@ -569,6 +582,7 @@ exit:
 	help_string		db 'HELP', 0
 	cls_string		db 'CLS', 0
 	dir_string		db 'DIR', 0
+	ddir_string		db 'DDIR', 0
 	time_string		db 'TIME', 0
 	date_string		db 'DATE', 0
 	ver_string		db 'VER', 0
