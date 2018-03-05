@@ -68,8 +68,9 @@ start:
 
 .ok_to_delete:
 	pop ax
-	mov bx, .deleted_filename
-	call os_rename_file
+	mov bx, ax
+	mov ax, .deleted_filename
+	call os_string_join
 	;call os_remove_file
 	jc near .writing_error
 
@@ -292,7 +293,7 @@ start:
 
 	.delete_confirm_msg	db 'Are you sure?', 0
 
-	.deleted_filename db '*deleted', 0
+	.deleted_filename 	db '*', 0
 
 	.filename_msg		db 'Enter filename with extension (eg FOO.BAR):', 0
 	.filename_input		times 255 db 0
