@@ -308,7 +308,7 @@ list_deleted:
 	call os_get_file_list
 	
 	mov si, ;dirlist
-	move ah, 0Eh
+	mov ah, 0Eh
   
 .repeat:
 	lodsb				; Start printing filenames
