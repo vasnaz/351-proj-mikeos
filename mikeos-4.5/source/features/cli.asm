@@ -75,7 +75,7 @@ get_cmd:				; Main processing loop
 	call os_string_compare
 	jc near list_directory
 	
-	mov di, ddir_string		; 'DDIR' entered?
+	mov di, ddir_string		; 'DIRD' entered?
 	call os_string_compare
 	jc near list_deleted
 
@@ -394,7 +394,12 @@ del_file:
 	jmp get_cmd
 
 .filename_provided:
-	call os_remove_file
+	mov bx, ax
+	mov ax, .deleted_str
+	call os_string_join
+	mov ax, bx
+	mov bx, cx
+	call os_rename_file
 	jc .failure
 
 	mov si, .success_msg
@@ -412,6 +417,7 @@ del_file:
 
 	.success_msg	db 'Deleted file: ', 0
 	.failure_msg	db 'Could not delete file - does not exist or write protected', 13, 10, 0
+	.deleted_str	db '*', 0
 
 
 ; ------------------------------------------------------------------
@@ -569,7 +575,7 @@ exit:
 
 	prompt			db '> ', 0
 
-	help_text		db 'Commands: DIR, COPY, REN, DEL, CAT, SIZE, CLS, HELP, TIME, DATE, VER, EXIT', 13, 10, 0
+	help_text		db 'Commands: DIR, DIRD, COPY, REN, DEL, CAT, SIZE, CLS, HELP, TIME, DATE, VER, EXIT', 13, 10, 0
 	invalid_msg		db 'No such command or program', 13, 10, 0
 	nofilename_msg		db 'No filename or not enough filenames', 13, 10, 0
 	notfound_msg		db 'File not found', 13, 10, 0
@@ -582,7 +588,7 @@ exit:
 	help_string		db 'HELP', 0
 	cls_string		db 'CLS', 0
 	dir_string		db 'DIR', 0
-	ddir_string		db 'DDIR', 0
+	ddir_string		db 'DIRD', 0
 	time_string		db 'TIME', 0
 	date_string		db 'DATE', 0
 	ver_string		db 'VER', 0

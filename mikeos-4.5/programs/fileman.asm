@@ -251,9 +251,12 @@ start:
 
 .show_deleted:
 	
+	call draw_background
 
+	call os_file_selector
+	jc .go_back
 
-
+.go_back
 	jmp start
 
 
@@ -280,7 +283,7 @@ start:
 	ret
 
 
-	.command_list		db 'Delete a file,Rename a file,Copy a file,Show file size,Show disk info, Show Deleted Files', 0
+	.command_list		db 'Delete a file,Rename a file,Copy a file,Show file size,Show disk info,Show Deleted Files', 0
 
 	.help_msg1		db 'Select a file operation to perform,', 0
 	.help_msg2		db 'or press the Esc key to exit...', 0
