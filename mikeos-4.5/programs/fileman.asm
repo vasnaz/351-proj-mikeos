@@ -256,7 +256,7 @@ start:
 	call os_file_selector
 	jc .go_back
 
-.go_back
+.go_back:
 	jmp start
 
 
