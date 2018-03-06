@@ -251,7 +251,7 @@ start:
 
 .show_deleted:
 	
-	call draw_background
+	call .draw_background
 
 	call os_file_selector
 	jc .go_back
