@@ -246,7 +246,7 @@ start:
 
 	jmp start
 
-.show_deleted
+.show_deleted:
 	
 
 
