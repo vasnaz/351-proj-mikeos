@@ -71,6 +71,9 @@ start:
 	mov bx, ax
 	mov ax, .deleted_filename
 	call os_string_join
+	mov ax, bx
+	mov bx, cx
+	call os_rename_file
 	;call os_remove_file
 	jc near .writing_error
 
