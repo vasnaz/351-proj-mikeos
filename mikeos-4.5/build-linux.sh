@@ -72,7 +72,7 @@ rm -rf tmp-loop
 echo ">>> Creating CD-ROM ISO image..."
 
 rm -f disk_images/mikeos.iso
-mkisofs -quiet -V 'MIKEOS' -input-charset iso8859-1 -o disk_images/mikeos.iso -b mikeos.flp disk_images/ || exit
+genisoimage -quiet -V 'MIKEOS' -input-charset iso8859-1 -o disk_images/mikeos.iso -b mikeos.flp disk_images/ || exit
 
 echo '>>> Done!'
 
