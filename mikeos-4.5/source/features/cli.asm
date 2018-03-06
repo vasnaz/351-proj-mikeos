@@ -304,10 +304,10 @@ list_directory:
 list_deleted:
 	mov cx, 0			; Counter
 	
-	mov ax, ;dirlist
+	mov ax, dirlist
 	call os_get_file_list
 	
-	mov si, ;dirlist
+	mov si, dirlist
 	mov ah, 0Eh
   
 .repeat:
