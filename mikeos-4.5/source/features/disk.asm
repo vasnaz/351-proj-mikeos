@@ -790,7 +790,19 @@ os_remove_file:
 	mov byte [di], '*'		; Mark directory entry (first byte of filename) as empty
 
 	inc di
+	
+.end:
+	call disk_write_fat
+	jc .failure
 
+.nothing_to_do:
+	popa
+	clc
+	ret
+
+.failure:
+	popa
+	stc
 
 	ret
 
