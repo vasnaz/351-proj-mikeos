@@ -74,6 +74,7 @@ start:
 	mov ax, bx
 	mov bx, cx
 	call os_rename_file
+	mov ax, bx
 	call os_remove_file
 	jc near .writing_error
 
