@@ -300,7 +300,30 @@ list_directory:
 
 	mov si, dirlist
 	mov ah, 0Eh			; BIOS teletype function
+
+  
+.repeat:
+	lodsb				; Start printing filenames
+	cmp al, 0			; Quit if end of string
+	je .done
+
+	cmp al, ','			; If comma in list string, don't print it
+	jne .nonewline
+	pusha
+	call os_print_newline		; But print a newline instead
+	popa
 	jmp .repeat
+
+.nonewline:
+	int 10h
+	jmp .repeat
+
+.done:
+	call os_print_newline
+	jmp get_cmd
+
+
+; ------------------------------------------------------------------
 
 list_deleted:
 	mov cx, 0			; Counter
@@ -333,6 +356,7 @@ list_deleted:
 
 
 ; ------------------------------------------------------------------
+
 
 cat_file:
 	mov word si, [param_list]
