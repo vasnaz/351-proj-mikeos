@@ -300,6 +300,7 @@ list_directory:
 
 	mov si, dirlist
 	mov ah, 0Eh			; BIOS teletype function
+	jmp .repeat
 
 list_deleted:
 	mov cx, 0			; Counter
