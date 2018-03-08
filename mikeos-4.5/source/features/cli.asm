@@ -592,6 +592,7 @@ exit:
 	command			times 32 db 0
 
 	dirlist			times 1024 db 0
+	ddirlist		times 2048 db 0
 	tmp_string		times 15 db 0
 
 	file_size		dw 0
