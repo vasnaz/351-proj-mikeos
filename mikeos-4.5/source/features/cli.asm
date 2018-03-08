@@ -308,7 +308,7 @@ list_deleted:
 	call os_get_file_list
 	
 	mov si, dirlist
-	mov ah, 0Eh
+	mov ah, 0E5h
   
 .repeat:
 	lodsb				; Start printing filenames
@@ -400,6 +400,8 @@ del_file:
 	mov ax, bx
 	mov bx, cx
 	call os_rename_file
+	mov ax, bx
+	call os_remove_file
 	jc .failure
 
 	mov si, .success_msg
