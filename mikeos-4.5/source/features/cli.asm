@@ -419,13 +419,7 @@ del_file:
 	jmp get_cmd
 
 .filename_provided:
-	mov bx, ax
-	mov ax, .deleted_str
-	call os_string_join
-	mov ax, bx
-	mov bx, cx
-	call os_rename_file
-	mov ax, bx
+
 	call os_remove_file
 	jc .failure
 
@@ -592,6 +586,7 @@ exit:
 	command			times 32 db 0
 
 	dirlist			times 1024 db 0
+	ddirlist		times 2048 db 0
 	tmp_string		times 15 db 0
 
 	file_size		dw 0
