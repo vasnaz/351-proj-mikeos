@@ -792,62 +792,62 @@ os_remove_file:
 	inc di
 
 	mov cx, 0			; Set rest of data in root dir entry to zeros
-.clean_loop:
-	mov byte [di], 0
-	inc di
-	inc cx
-	cmp cx, 31			; 32-byte entries, minus E5h byte we marked before
-	jl .clean_loop
+;.clean_loop:
+;	mov byte [di], 0
+;	inc di
+;	inc cx
+;	cmp cx, 31			; 32-byte entries, minus E5h byte we marked before
+;	jl .clean_loop
 
-	call disk_write_root_dir	; Save back the root directory from RAM
-
-
-	call disk_read_fat		; Now FAT is in disk_buffer
-	mov di, disk_buffer		; And DI points to it
+;	call disk_write_root_dir	; Save back the root directory from RAM
 
 
-.more_clusters:
-	mov word ax, [.cluster]		; Get cluster contents
+;	call disk_read_fat		; Now FAT is in disk_buffer
+;	mov di, disk_buffer		; And DI points to it
 
-	cmp ax, 0			; If it's zero, this was an empty file
-	je .nothing_to_do
 
-	mov bx, 3			; Determine if cluster is odd or even number
-	mul bx
-	mov bx, 2
-	div bx				; DX = [first_cluster] mod 2
-	mov si, disk_buffer		; AX = word in FAT for the 12 bits
-	add si, ax
-	mov ax, word [ds:si]
+;.more_clusters:
+;	mov word ax, [.cluster]		; Get cluster contents
 
-	or dx, dx			; If DX = 0 [.cluster] = even, if DX = 1 then odd
+;	cmp ax, 0			; If it's zero, this was an empty file
+;	je .nothing_to_do
 
-	jz .even			; If [.cluster] = even, drop last 4 bits of word
+;	mov bx, 3			; Determine if cluster is odd or even number
+;	mul bx
+;	mov bx, 2
+;	div bx				; DX = [first_cluster] mod 2
+;	mov si, disk_buffer		; AX = word in FAT for the 12 bits
+;	add si, ax
+;	mov ax, word [ds:si]
+
+;	or dx, dx			; If DX = 0 [.cluster] = even, if DX = 1 then odd
+
+;	jz .even			; If [.cluster] = even, drop last 4 bits of word
 					; with next cluster; if odd, drop first 4 bits
-.odd:
-	push ax
-	and ax, 000Fh			; Set cluster data to zero in FAT in RAM
-	mov word [ds:si], ax
-	pop ax
+;.odd:
+;	push ax
+;	and ax, 000Fh			; Set cluster data to zero in FAT in RAM
+;	mov word [ds:si], ax
+;	pop ax
 
-	shr ax, 4			; Shift out first 4 bits (they belong to another entry)
-	jmp .calculate_cluster_cont	; Onto next sector!
+;	shr ax, 4			; Shift out first 4 bits (they belong to another entry)
+;	jmp .calculate_cluster_cont	; Onto next sector!
 
-.even:
-	push ax
-	and ax, 0F000h			; Set cluster data to zero in FAT in RAM
-	mov word [ds:si], ax
-	pop ax
+;.even:
+;	push ax
+;	and ax, 0F000h			; Set cluster data to zero in FAT in RAM
+;	mov word [ds:si], ax
+;	pop ax
 
-	and ax, 0FFFh			; Mask out top (last) 4 bits (they belong to another entry)
+;	and ax, 0FFFh			; Mask out top (last) 4 bits (they belong to another entry)
 
-.calculate_cluster_cont:
-	mov word [.cluster], ax		; Store cluster
+;.calculate_cluster_cont:
+;	mov word [.cluster], ax		; Store cluster
 
-	cmp ax, 0FF8h			; Final cluster marker?
-	jae .end
+;	cmp ax, 0FF8h			; Final cluster marker?
+;	jae .end
 
-	jmp .more_clusters		; If not, grab more
+;	jmp .more_clusters		; If not, grab more
 
 .end:
 	call disk_write_fat
