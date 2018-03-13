@@ -332,25 +332,25 @@ list_deleted:
 	call os_get_file_list
 	
 	mov si, dirlist
-	mov ah, 0Eh
+	mov ah, 0E5h
   
-.repeat:
+.repeat_deleted:
 	lodsb				; Start printing filenames
 	cmp al, 0			; Quit if end of string
-	je .done
+	je .done_d
 
 	cmp al, ','			; If comma in list string, don't print it
-	jne .nonewline
+	jne .nonewline_d
 	pusha
 	call os_print_newline		; But print a newline instead
 	popa
-	jmp .repeat
+	jmp .repeat_deleted
 
-.nonewline:
+.nonewline_d:
 	int 10h
-	jmp .repeat
+	jmp .repeat_deleted
 
-.done:
+.done_d:
 	call os_print_newline
 	jmp get_cmd
 
